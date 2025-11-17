@@ -64,9 +64,11 @@ Sistema de gestión hospitalaria desarrollado con tecnologías web modernas, dis
 
 - 🎨 **Diseño Profesional** - Interfaz moderna con sidebar colapsable y gradientes
 - 📱 **100% Responsive** - Optimizado para móviles, tablets y desktop
-- ⚡ **Rendimiento Optimizado** - Hot Module Replacement con Vite
-- 🔒 **Arquitectura Escalable** - Separación de capas (UI, Servicios, Datos)
+- ⚡ **Rendimiento Optimizado** - Sistema de caché con TTL de 30s + Hot Module Replacement
+- 🔒 **Arquitectura Escalable** - Separación de capas (UI, Servicios, Caché, Datos)
 - 🎭 **Mock Service Worker** - Backend simulado sin necesidad de servidor real
+- 🛡️ **Manejo Robusto de Errores** - Clase APIError con mensajes contextuales y retry mechanism
+- 💾 **Estados de Carga Granulares** - Feedback visual específico para cada operación
 - 🎨 **Tailwind CSS** - Estilos utility-first para desarrollo rápido
 
 ---
@@ -121,10 +123,15 @@ Sistema de gestión hospitalaria desarrollado con tecnologías web modernas, dis
 
 - ✅ **SPA (Single Page Application)** - Navegación sin recargas de página
 - ✅ **API RESTful Mock** - Endpoints completos con MSW
+- ✅ **Sistema de Caché Inteligente** - Caché en memoria con TTL de 30 segundos para optimizar peticiones
+- ✅ **Manejo Robusto de Errores** - Clase APIError personalizada con mensajes user-friendly por código HTTP
+- ✅ **Estados de Carga Granulares** - Indicadores específicos para cada operación (guardando, eliminando, cargando)
+- ✅ **Retry Mechanism** - Botón de reintentar con alternativas de navegación en caso de error
 - ✅ **Arquitectura en Capas** - Servicios centralizados y componentes reutilizables
-- ✅ **Estado Local** - Gestión de estado con React Hooks
+- ✅ **Estado Local Optimizado** - Gestión de estado con React Hooks y prevención de re-renders innecesarios
 - ✅ **Hot Module Replacement** - Desarrollo con recarga instantánea
 - ✅ **ES Modules** - Código moderno con import/export
+- ✅ **Rutas Dinámicas** - Configuración automática para desarrollo y producción (GitHub Pages)
 
 ---
 
@@ -295,14 +302,68 @@ Components → Pages → Layout
 
 ### Capa de Servicios
 ```
-Pages → API Service → MSW Handlers
+Pages → API Service → Cache Layer → MSW Handlers
 ```
 - **API Service** (`src/services/api.js`): Centraliza todas las llamadas HTTP
+- **Cache Layer**: Sistema de caché en memoria con invalidación automática
 - **MSW Handlers**: Intercepta y simula respuestas del backend
+
+### Sistema de Caché
+
+El proyecto implementa un sistema de caché inteligente:
+
+```javascript
+// Caché en memoria con TTL de 30 segundos
+const cache = {
+  pacientes: null,
+  lastFetch: null,
+  CACHE_DURATION: 30000
+};
+```
+
+**Características:**
+- ✅ **Cache hits**: `getAll()` usa caché si es válido (< 30s)
+- ✅ **Búsqueda optimizada**: `getById()` busca en caché antes de hacer fetch
+- ✅ **Invalidación automática**: Create/Update/Delete limpian el caché
+- ✅ **Force refresh**: Opción `getAll(true)` para forzar recarga
+- ✅ **Logs detallados**: Console logs de cache hits/misses
+
+### Manejo de Errores
+
+Sistema robusto con clase personalizada `APIError`:
+
+```javascript
+class APIError extends Error {
+  constructor(message, status, details) {
+    super(message);
+    this.status = status;
+    this.userMessage = getUserFriendlyMessage(status);
+  }
+}
+```
+
+**Características:**
+- ✅ **Mensajes contextuales** por código HTTP (400, 401, 403, 404, 500, 503)
+- ✅ **Interfaz de error mejorada** con iconos y colores semánticos
+- ✅ **Botón "Reintentar"** con funcionalidad completa
+- ✅ **Soluciones sugeridas** específicas por tipo de error
+- ✅ **Navegación alternativa** (botón "Ir al inicio")
+
+### Estados de Carga
+
+Indicadores granulares por operación:
+
+- 🔄 **Loading inicial**: Spinner mientras MSW se inicializa
+- 💾 **Guardando**: Estado específico en formularios
+- 🗑️ **Eliminando**: Feedback visual en botones delete
+- 🔍 **Cargando lista**: Spinner en lista de pacientes
+- 🔒 **Botones deshabilitados**: Previene clicks durante operaciones
 
 ### Flujo de Datos
 ```
-User Action → Component → API Service → MSW → Response → State Update → Re-render
+User Action → Component → API Service → Cache Check → MSW → Response → State Update → Re-render
+                                 ↓                                    ↓
+                            Cache Hit (return)              Cache Invalidation (CUD)
 ```
 
 ---
