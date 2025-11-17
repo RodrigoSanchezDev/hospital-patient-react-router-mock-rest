@@ -63,8 +63,11 @@ function App() {
     );
   }
 
+  // Configurar basename para que funcione en GitHub Pages y en local
+  const basename = import.meta.env.BASE_URL || '/';
+
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />

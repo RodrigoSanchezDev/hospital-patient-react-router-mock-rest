@@ -11,11 +11,14 @@ function ListaPacientes() {
   useEffect(() => {
     const fetchPacientes = async () => {
       try {
+        setLoading(true);
+        setError(null);
         const data = await pacientesAPI.getAll();
         setPacientes(data);
         setLoading(false);
       } catch (err) {
-        setError(err.message);
+        console.error('Error al cargar pacientes:', err);
+        setError(err);
         setLoading(false);
       }
     };
@@ -23,14 +26,30 @@ function ListaPacientes() {
     fetchPacientes();
   }, []);
 
+  const handleRetry = () => {
+    setError(null);
+    pacientesAPI.getAll(true).then(data => {
+      setPacientes(data);
+      setLoading(false);
+    }).catch(err => {
+      setError(err);
+      setLoading(false);
+    });
+  };
+
+  const [deletingId, setDeletingId] = useState(null);
+
   const handleDelete = async (id) => {
     if (window.confirm('¿Está seguro de eliminar este paciente?')) {
       try {
+        setDeletingId(id); // Mostrar indicador de carga
         await pacientesAPI.delete(id);
         setPacientes(pacientes.filter(p => p.id !== id));
-        alert('Paciente eliminado exitosamente');
-      } catch {
-        alert('Error al eliminar el paciente');
+        alert('✅ Paciente eliminado exitosamente');
+      } catch (err) {
+        alert('❌ Error al eliminar: ' + (err.userMessage || err.message));
+      } finally {
+        setDeletingId(null); // Ocultar indicador
       }
     }
   };
@@ -51,10 +70,58 @@ function ListaPacientes() {
 
   if (error) {
     return (
-      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-        <p className="font-bold">Error</p>
-        <p>{error}</p>
-        <p className="text-sm mt-2">Asegúrate de que el servidor JSON esté ejecutándose en el puerto 3000</p>
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-red-50 border-l-4 border-red-500 p-6 rounded-lg shadow-md">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              <svg className="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div className="ml-3 flex-1">
+              <h3 className="text-lg font-semibold text-red-800 mb-2">
+                Error al cargar los datos
+              </h3>
+              <p className="text-red-700 mb-3">
+                {error.userMessage || error.message}
+              </p>
+              {error.status && (
+                <p className="text-sm text-red-600 mb-3">
+                  Código de error: {error.status}
+                </p>
+              )}
+              <div className="space-y-2">
+                <p className="text-sm text-red-600">
+                  <strong>Soluciones sugeridas:</strong>
+                </p>
+                <ul className="list-disc list-inside text-sm text-red-600 space-y-1">
+                  <li>Verifica tu conexión a internet</li>
+                  <li>Recarga la página (F5 o Cmd+R)</li>
+                  <li>Intenta nuevamente en unos momentos</li>
+                  {error.status === 404 && <li>El recurso puede haber sido eliminado</li>}
+                  {error.status >= 500 && <li>El servidor está experimentando problemas temporales</li>}
+                </ul>
+              </div>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <button
+                  onClick={handleRetry}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium flex items-center gap-2"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  Reintentar
+                </button>
+                <button
+                  onClick={() => window.location.href = '/'}
+                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+                >
+                  Ir al inicio
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -166,9 +233,21 @@ function ListaPacientes() {
                   </Link>
                   <button
                     onClick={() => handleDelete(paciente.id)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-600 transition-colors duration-200"
+                    disabled={deletingId === paciente.id}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center gap-2 ${
+                      deletingId === paciente.id
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-red-500 text-white hover:bg-red-600'
+                    }`}
                   >
-                    Eliminar
+                    {deletingId === paciente.id ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        Eliminando...
+                      </>
+                    ) : (
+                      'Eliminar'
+                    )}
                   </button>
                 </div>
               </div>

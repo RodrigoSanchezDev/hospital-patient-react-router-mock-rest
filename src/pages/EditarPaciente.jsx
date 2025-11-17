@@ -46,21 +46,26 @@ function EditarPaciente() {
     }));
   };
 
+  const [saving, setSaving] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     try {
+      setSaving(true);
+      
       if (id) {
         await pacientesAPI.update(id, formData);
-        alert('Paciente actualizado exitosamente');
+        alert('✅ Paciente actualizado exitosamente');
       } else {
         await pacientesAPI.create(formData);
-        alert('Paciente creado exitosamente');
+        alert('✅ Paciente creado exitosamente');
       }
       
       navigate('/pacientes');
     } catch (err) {
-      alert('Error al guardar: ' + err.message);
+      alert('❌ Error al guardar: ' + (err.userMessage || err.message));
+      setSaving(false);
     }
   };
 
@@ -275,9 +280,21 @@ function EditarPaciente() {
             </button>
             <button
               type="submit"
-              className="w-full sm:w-auto px-6 py-3 bg-primary text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm sm:text-base font-semibold"
+              disabled={saving}
+              className={`w-full sm:w-auto px-6 py-3 rounded-lg transition-colors duration-200 text-sm sm:text-base font-semibold flex items-center justify-center gap-2 ${
+                saving
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-primary text-white hover:bg-blue-700'
+              }`}
             >
-              {id ? 'Actualizar Paciente' : 'Crear Paciente'}
+              {saving ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  Guardando...
+                </>
+              ) : (
+                id ? 'Actualizar Paciente' : 'Crear Paciente'
+              )}
             </button>
           </div>
         </form>
