@@ -1,0 +1,100 @@
+{
+  "pacientes": [
+    {
+      "id": "P001",
+      "nombre": "María González",
+      "edad": 45,
+      "numeroPaciente": "P001",
+      "telefono": "+56 9 1234 5678",
+      "email": "maria.gonzalez@email.com",
+      "diagnostico": "Diabetes Tipo 2",
+      "fechaIngreso": "2024-01-15",
+      "doctor": "Dr. Juan Pérez",
+      "estadoActual": "Estable"
+    },
+    {
+      "id": "P002",
+      "nombre": "Carlos Ramírez",
+      "edad": 32,
+      "numeroPaciente": "P002",
+      "telefono": "+56 9 8765 4321",
+      "email": "carlos.ramirez@email.com",
+      "diagnostico": "Fractura de Tibia",
+      "fechaIngreso": "2024-02-20",
+      "doctor": "Dr. Ana Martínez",
+      "estadoActual": "En Recuperación"
+    },
+    {
+      "id": "P003",
+      "nombre": "Isabel Torres",
+      "edad": 58,
+      "numeroPaciente": "P003",
+      "telefono": "+56 9 5555 1234",
+      "email": "isabel.torres@email.com",
+      "diagnostico": "Hipertensión Arterial",
+      "fechaIngreso": "2024-03-10",
+      "doctor": "Dr. Juan Pérez",
+      "estadoActual": "Estable"
+    },
+    {
+      "id": "P004",
+      "nombre": "Roberto Silva",
+      "edad": 67,
+      "numeroPaciente": "P004",
+      "telefono": "+56 9 9876 5432",
+      "email": "roberto.silva@email.com",
+      "diagnostico": "Neumonía",
+      "fechaIngreso": "2024-04-05",
+      "doctor": "Dr. Carmen López",
+      "estadoActual": "En Tratamiento"
+    },
+    {
+      "id": "P005",
+      "nombre": "Ana Fernández",
+      "edad": 29,
+      "numeroPaciente": "P005",
+      "telefono": "+56 9 3333 7777",
+      "email": "ana.fernandez@email.com",
+      "diagnostico": "Apendicitis",
+      "fechaIngreso": "2024-05-12",
+      "doctor": "Dr. Ana Martínez",
+      "estadoActual": "Alta Programada"
+    },
+    {
+      "id": "P006",
+      "nombre": "Pedro Morales",
+      "edad": 51,
+      "numeroPaciente": "P006",
+      "telefono": "+56 9 4444 8888",
+      "email": "pedro.morales@email.com",
+      "diagnostico": "Hernia Discal",
+      "fechaIngreso": "2024-06-18",
+      "doctor": "Dr. Luis Rodríguez",
+      "estadoActual": "En Recuperación"
+    },
+    {
+      "id": "P007",
+      "nombre": "Laura Sánchez",
+      "edad": 41,
+      "numeroPaciente": "P007",
+      "telefono": "+56 9 6666 2222",
+      "email": "laura.sanchez@email.com",
+      "diagnostico": "Migraña Crónica",
+      "fechaIngreso": "2024-07-22",
+      "doctor": "Dr. Carmen López",
+      "estadoActual": "En Tratamiento"
+    },
+    {
+      "id": "P008",
+      "nombre": "Jorge Vargas",
+      "edad": 73,
+      "numeroPaciente": "P008",
+      "telefono": "+56 9 7777 3333",
+      "email": "jorge.vargas@email.com",
+      "diagnostico": "Insuficiencia Cardíaca",
+      "fechaIngreso": "2024-08-30",
+      "doctor": "Dr. Juan Pérez",
+      "estadoActual": "Crítico Estable"
+    }
+  ]
+}
