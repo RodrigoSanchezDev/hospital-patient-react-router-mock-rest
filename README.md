@@ -11,7 +11,9 @@
 [![MSW](https://img.shields.io/badge/MSW-Latest-FF6A33?style=for-the-badge&logo=mock-service-worker&logoColor=white)](https://mswjs.io/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](./LICENSE)
 
-[Demo](#-demo) • [Características](#-características) • [Instalación](#-instalación) • [Uso](#-uso) • [Documentación](#-documentación) • [Licencia](#-licencia)
+### 🚀 [Ver Demo en Vivo](https://rodrigosanchezdev.github.io/hospital-patient-react-router-mock-rest/)
+
+[Demo](https://rodrigosanchezdev.github.io/hospital-patient-react-router-mock-rest/) • [Características](#-características) • [Instalación](#-instalación) • [Uso](#-uso) • [Documentación](#-documentación) • [Licencia](#-licencia)
 
 </div>
 
@@ -19,6 +21,7 @@
 
 ## 📋 Tabla de Contenidos
 
+- [Demo](#-demo)
 - [Acerca del Proyecto](#-acerca-del-proyecto)
 - [Tecnologías](#-tecnologías)
 - [Características](#-características)
@@ -32,11 +35,28 @@
 - [Roadmap](#-roadmap)
 - [Contribuir](#-contribuir)
 - [Licencia](#-licencia)
-- [Contacto](#-contacto)
+- [Autor](#-autor)
 
 ---
 
-## 🎯 Acerca del Proyecto
+## � Demo
+
+### 🔗 **Aplicación en vivo:** [https://rodrigosanchezdev.github.io/hospital-patient-react-router-mock-rest/](https://rodrigosanchezdev.github.io/hospital-patient-react-router-mock-rest/)
+
+La aplicación está desplegada en GitHub Pages y está completamente funcional. Puedes:
+- ✅ Ver la lista completa de pacientes
+- ✅ Buscar pacientes en tiempo real
+- ✅ Ver detalles completos de cada paciente
+- ✅ Crear nuevos pacientes
+- ✅ Editar información existente
+- ✅ Eliminar pacientes
+- ✅ Probar el diseño responsive en cualquier dispositivo
+
+> **Nota:** La aplicación usa Mock Service Worker (MSW) para simular un backend REST, por lo que los datos se reinician al recargar la página.
+
+---
+
+## �🎯 Acerca del Proyecto
 
 Sistema de gestión hospitalaria desarrollado con tecnologías web modernas, diseñado para proporcionar una interfaz intuitiva y eficiente para la administración de información de pacientes. La aplicación implementa un patrón de arquitectura limpia con separación de responsabilidades y utiliza Mock Service Worker para simular un backend REST completo.
 
