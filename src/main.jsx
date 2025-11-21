@@ -7,11 +7,16 @@ import App from './App.jsx'
 async function enableMocking() {
   const { worker } = await import('./mocks/browser')
 
+  // Configurar la URL del Service Worker según el entorno
+  // En desarrollo usa la ruta raíz, en producción usa la base de GitHub Pages
+  const base = import.meta.env.BASE_URL || '/';
+  const serviceWorkerUrl = `${base}mockServiceWorker.js`;
+
   // `worker.start()` returns a Promise that resolves
   // once the Service Worker is up and ready to intercept requests.
   return worker.start({
     serviceWorker: {
-      url: '/hospital-patient-react-router-mock-rest/mockServiceWorker.js'
+      url: serviceWorkerUrl
     }
   })
 }
